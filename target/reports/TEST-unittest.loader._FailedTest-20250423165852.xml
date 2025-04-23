@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="unittest.loader._FailedTest-20250423165852" tests="3" file="unittest/loader.py" time="0.004" timestamp="2025-04-23T16:58:52" failures="0" errors="3" skipped="0">
+	<testcase classname="unittest.loader._FailedTest" name="test_deposit_tests" time="0.002" timestamp="2025-04-23T16:58:52">
+		<error type="ImportError" message="Failed to import test module: test_deposit_tests
+Traceback (most recent call last):
+  File &quot;/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py&quot;, line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File &quot;/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_deposit_tests.py&quot;, line 8, in &lt;module&gt;
+    from freezegun import freeze_time
+ModuleNotFoundError: No module named 'freezegun'
+"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 34, in testFailure
+    raise self._exception
+ImportError: Failed to import test module: test_deposit_tests
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_deposit_tests.py", line 8, in <module>
+    from freezegun import freeze_time
+ModuleNotFoundError: No module named 'freezegun'
+
+]]></error>
+	</testcase>
+	<testcase classname="unittest.loader._FailedTest" name="test_transfer_request_tests" time="0.001" timestamp="2025-04-23T16:58:52">
+		<error type="ImportError" message="Failed to import test module: test_transfer_request_tests
+Traceback (most recent call last):
+  File &quot;/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py&quot;, line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File &quot;/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_transfer_request_tests.py&quot;, line 8, in &lt;module&gt;
+    from freezegun import freeze_time
+ModuleNotFoundError: No module named 'freezegun'
+"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 34, in testFailure
+    raise self._exception
+ImportError: Failed to import test module: test_transfer_request_tests
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_transfer_request_tests.py", line 8, in <module>
+    from freezegun import freeze_time
+ModuleNotFoundError: No module named 'freezegun'
+
+]]></error>
+	</testcase>
+	<testcase classname="unittest.loader._FailedTest" name="test_calculate_balance_tests" time="0.001" timestamp="2025-04-23T16:58:52">
+		<error type="ImportError" message="Failed to import test module: test_calculate_balance_tests
+Traceback (most recent call last):
+  File &quot;/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py&quot;, line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File &quot;/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py&quot;, line 9, in &lt;module&gt;
+    from freezegun import freeze_time
+ModuleNotFoundError: No module named 'freezegun'
+"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 34, in testFailure
+    raise self._exception
+ImportError: Failed to import test module: test_calculate_balance_tests
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py", line 9, in <module>
+    from freezegun import freeze_time
+ModuleNotFoundError: No module named 'freezegun'
+
+]]></error>
+	</testcase>
+</testsuite>

@@ -28,8 +28,8 @@ class AccountManager:
     Returns:
         str: El dígito de control calculado.
         """
-        mr = re.compile(r"^ES[0-9]{22}")
-        res = mr.fullmatch(ic)
+        regex_ib = re.compile(r"^ES[0-9]{22}")
+        res = regex_ib.fullmatch(ic)
         if not res:
             raise AccountManagementException("Invalid IBAN format")
         iban = ic

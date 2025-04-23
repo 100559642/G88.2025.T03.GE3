@@ -18,21 +18,21 @@ class AccountManager:
         pass
 
     @staticmethod
-    def valivan(ic: str):
+    def valivan(iban_code: str):
         """
     Calcula el dígito de control de un IBAN español.
 
     Args:
-        ic (str): El IBAN sin los dos últimos dígitos (dígito de control).
+        iban_code (str): El IBAN sin los dos últimos dígitos (dígito de control).
 
     Returns:
         str: El dígito de control calculado.
         """
         regex_ib = re.compile(r"^ES[0-9]{22}")
-        res = regex_ib.fullmatch(ic)
+        res = regex_ib.fullmatch(iban_code)
         if not res:
             raise AccountManagementException("Invalid IBAN format")
-        iban = ic
+        iban = iban_code
         original_code = iban[2:4]
         #replacing the control
         iban = iban[:2] + "00" + iban[4:]
@@ -68,7 +68,7 @@ class AccountManager:
             #print(dc)
             raise AccountManagementException("Invalid IBAN control digit")
 
-        return ic
+        return iban_code
 
     def validate_concept(self, concept: str):
         """regular expression for checking the minimum and maximum length as well as

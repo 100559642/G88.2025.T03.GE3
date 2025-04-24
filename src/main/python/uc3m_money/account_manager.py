@@ -197,14 +197,7 @@ class AccountManager:
 
         deposit_obj = AccountDeposit(to_iban=deposit_iban,
                                      deposit_amount=deposit_amount_float)
-
-        try:
-            with open(DEPOSITS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                deposit_lists = json.load(file)
-        except FileNotFoundError as ex:
-            deposit_lists = []
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        deposit_lists = self.load_json_store(DEPOSITS_STORE_FILE)
 
         deposit_lists.append(deposit_obj.to_json())
 

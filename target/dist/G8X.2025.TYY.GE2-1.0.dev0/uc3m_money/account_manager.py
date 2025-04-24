@@ -18,21 +18,21 @@ class AccountManager:
         pass
 
     @staticmethod
-    def valivan(ic: str):
+    def valivan(iban_code: str):
         """
     Calcula el dígito de control de un IBAN español.
 
     Args:
-        ic (str): El IBAN sin los dos últimos dígitos (dígito de control).
+        iban_code (str): El IBAN sin los dos últimos dígitos (dígito de control).
 
     Returns:
         str: El dígito de control calculado.
         """
-        mr = re.compile(r"^ES[0-9]{22}")
-        res = mr.fullmatch(ic)
-        if not res:
+        regex_ib = re.compile(r"^ES[0-9]{22}")
+        regex_matches = regex_ib.fullmatch(iban_code)
+        if not regex_matches:
             raise AccountManagementException("Invalid IBAN format")
-        iban = ic
+        iban = iban_code
         original_code = iban[2:4]
         #replacing the control
         iban = iban[:2] + "00" + iban[4:]
@@ -56,39 +56,39 @@ class AccountManager:
         # Mover los cuatro primeros caracteres al final
 
         # Convertir la cadena en un número entero
-        int_i = int(iban)
+        int_iban = int(iban)
 
         # Calcular el módulo 97
-        mod = int_i % 97
+        iban_mod = int_iban % 97
 
         # Calcular el dígito de control (97 menos el módulo)
-        dc = 98 - mod
+        control_digit = 98 - iban_mod
 
-        if int(original_code) != dc:
-            #print(dc)
+        if int(original_code) != control_digit:
+            #print(control_digit)
             raise AccountManagementException("Invalid IBAN control digit")
 
-        return ic
+        return iban_code
 
     def validate_concept(self, concept: str):
         """regular expression for checking the minimum and maximum length as well as
         the allowed characters and spaces restrictions
         there are other ways to check this"""
-        myregex = re.compile(r"^(?=^.{10,30}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$")
+        regex_concept = re.compile(r"^(?=^.{10,30}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$")
 
-        res = myregex.fullmatch(concept)
-        if not res:
+        match_regex = regex_concept.fullmatch(concept)
+        if not match_regex:
             raise AccountManagementException ("Invalid concept format")
 
-    def validate_transfer_date(self, t_d):
+    def validate_transfer_date(self, transfer_date):
         """validates the arrival date format  using regex"""
-        mr = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        res = mr.fullmatch(t_d)
-        if not res:
+        regex_date = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
+        match_regex = regex_date.fullmatch(transfer_date)
+        if not match_regex:
             raise AccountManagementException("Invalid date format")
 
         try:
-            my_date = datetime.strptime(t_d, "%d/%m/%Y").date()
+            my_date = datetime.strptime(transfer_date, "%d/%m/%Y").date()
         except ValueError as ex:
             raise AccountManagementException("Invalid date format") from ex
 
@@ -97,7 +97,7 @@ class AccountManager:
 
         if my_date.year < 2025 or my_date.year > 2050:
             raise AccountManagementException("Invalid date format")
-        return t_d
+        return transfer_date
     #pylint: disable=too-many-arguments
     def transfer_request(self, from_iban: str,
                          to_iban: str,
@@ -110,27 +110,9 @@ class AccountManager:
         self.valivan(from_iban)
         self.valivan(to_iban)
         self.validate_concept(concept)
-        mr = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")
-        res = mr.fullmatch(transfer_type)
-        if not res:
-            raise AccountManagementException("Invalid transfer type")
+        self.validate_transfer_type(transfer_type)
         self.validate_transfer_date(date)
-
-
-
-        try:
-            f_amount  = float(amount)
-        except ValueError as exc:
-            raise AccountManagementException("Invalid transfer amount") from exc
-
-        n_str = str(f_amount)
-        if '.' in n_str:
-            decimales = len(n_str.split('.')[1])
-            if decimales > 2:
-                raise AccountManagementException("Invalid transfer amount")
-
-        if f_amount < 10 or f_amount > 10000:
-            raise AccountManagementException("Invalid transfer amount")
+        self.validate_deposit_amount(amount)
 
         my_request = TransferRequest(from_iban=from_iban,
                                      to_iban=to_iban,
@@ -139,28 +121,22 @@ class AccountManager:
                                      transfer_date=date,
                                      transfer_amount=amount)
 
-        try:
-            with open(TRANSFERS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                t_l = json.load(file)
-        except FileNotFoundError:
-            t_l = []
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        load_transfer = self.load_json_store(TRANSFERS_STORE_FILE)
 
-        for t_i in t_l:
-            if (t_i["from_iban"] == my_request.from_iban and
-                    t_i["to_iban"] == my_request.to_iban and
-                    t_i["transfer_date"] == my_request.transfer_date and
-                    t_i["transfer_amount"] == my_request.transfer_amount and
-                    t_i["transfer_concept"] == my_request.transfer_concept and
-                    t_i["transfer_type"] == my_request.transfer_type):
+        for existing_transfer in load_transfer:
+            if (existing_transfer["from_iban"] == my_request.from_iban and
+                    existing_transfer["to_iban"] == my_request.to_iban and
+                    existing_transfer["transfer_date"] == my_request.transfer_date and
+                    existing_transfer["transfer_amount"] == my_request.transfer_amount and
+                    existing_transfer["transfer_concept"] == my_request.transfer_concept and
+                    existing_transfer["transfer_type"] == my_request.transfer_type):
                 raise AccountManagementException("Duplicated transfer in transfer list")
 
-        t_l.append(my_request.to_json())
+        load_transfer.append(my_request.to_json())
 
         try:
             with open(TRANSFERS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(t_l, file, indent=2)
+                json.dump(load_transfer, file, indent=2)
         except FileNotFoundError as ex:
             raise AccountManagementException("Wrong file  or file path") from ex
         except json.JSONDecodeError as ex:
@@ -168,50 +144,66 @@ class AccountManager:
 
         return my_request.transfer_code
 
-    def deposit_into_account(self, input_file:str)->str:
-        """manages the deposits received for accounts"""
+    def validate_deposit_amount(self, amount):
         try:
-            with open(input_file, "r", encoding="utf-8", newline="") as file:
-                i_d = json.load(file)
-        except FileNotFoundError as ex:
-            raise AccountManagementException("Error: file input not found") from ex
+            float_amount = float(amount)
+        except ValueError as exc:
+            raise AccountManagementException("Invalid transfer amount") from exc
+        string_amount = str(float_amount)
+        if '.' in string_amount:
+            decimales = len(string_amount.split('.')[1])
+            if decimales > 2:
+                raise AccountManagementException("Invalid transfer amount")
+        if float_amount < 10 or float_amount > 10000:
+            raise AccountManagementException("Invalid transfer amount")
+
+    def validate_transfer_type(self, transfer_type):
+        regex_type = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")
+        match_regex = regex_type.fullmatch(transfer_type)
+        if not match_regex:
+            raise AccountManagementException("Invalid transfer type")
+
+    def load_json_store(self, input_f):
+        try:
+            with open(input_f, "r", encoding="utf-8", newline="") as file:
+                load_transfer = json.load(file)
+        except FileNotFoundError:
+            load_transfer = []
         except json.JSONDecodeError as ex:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        return load_transfer
+
+    def deposit_into_account(self, input_file:str)->str:
+        """manages the deposits received for accounts"""
+        input_deposit = self.load_json_store(input_file)
 
         # comprobar valores del fichero
         try:
-            deposit_iban = i_d["IBAN"]
-            deposit_amount = i_d["AMOUNT"]
+            deposit_iban = input_deposit["IBAN"]
+            deposit_amount = input_deposit["AMOUNT"]
         except KeyError as e:
             raise AccountManagementException("Error - Invalid Key in JSON") from e
 
 
         deposit_iban = self.valivan(deposit_iban)
-        myregex = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
-        res = myregex.fullmatch(deposit_amount)
-        if not res:
+        regex_amount = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
+        match_regex = regex_amount.fullmatch(deposit_amount)
+        if not match_regex:
             raise AccountManagementException("Error - Invalid deposit amount")
 
-        d_a_f = float(deposit_amount[4:])
-        if d_a_f == 0:
+        deposit_amount_float = float(deposit_amount[4:])
+        if deposit_amount_float == 0:
             raise AccountManagementException("Error - Deposit must be greater than 0")
 
         deposit_obj = AccountDeposit(to_iban=deposit_iban,
-                                     deposit_amount=d_a_f)
+                                     deposit_amount=deposit_amount_float)
+        deposit_lists = self.load_json_store(DEPOSITS_STORE_FILE)
 
-        try:
-            with open(DEPOSITS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                d_l = json.load(file)
-        except FileNotFoundError as ex:
-            d_l = []
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
-
-        d_l.append(deposit_obj.to_json())
+        deposit_lists.append(deposit_obj.to_json())
 
         try:
             with open(DEPOSITS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(d_l, file, indent=2)
+                json.dump(deposit_lists, file, indent=2)
         except FileNotFoundError as ex:
             raise AccountManagementException("Wrong file  or file path") from ex
         except json.JSONDecodeError as ex:
@@ -236,20 +228,20 @@ class AccountManager:
     def calculate_balance(self, iban:str)->bool:
         """calculate the balance for a given iban"""
         iban = self.valivan(iban)
-        t_l = self.read_transactions_file()
+        transaction_list = self.read_transactions_file()
         iban_found = False
-        bal_s = 0
-        for transaction in t_l:
+        balance = 0
+        for transaction in transaction_list:
             #print(transaction["IBAN"] + " - " + iban)
             if transaction["IBAN"] == iban:
-                bal_s += float(transaction["amount"])
+                balance += float(transaction["amount"])
                 iban_found = True
         if not iban_found:
             raise AccountManagementException("IBAN not found")
 
         last_balance = {"IBAN": iban,
                         "time": datetime.timestamp(datetime.now(timezone.utc)),
-                        "BALANCE": bal_s}
+                        "BALANCE": balance}
 
         try:
             with open(BALANCES_STORE_FILE, "r", encoding="utf-8", newline="") as file:

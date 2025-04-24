@@ -5,7 +5,7 @@ uc3m_money/__init__.py                           5      0      0      0   100%
 uc3m_money/account_deposit.py                   35      6      0      0    83%
 uc3m_money/account_management_config.py          7      0      0      0   100%
 uc3m_money/account_management_exception.py      10      1      0      0    90%
-uc3m_money/account_manager.py                  163     16     34      1    91%
+uc3m_money/account_manager.py                  158     10     34      1    94%
 uc3m_money/transfer_request.py                  59      7      0      0    88%
 ------------------------------------------------------------------------------
-TOTAL                                          279     30     34      1    90%
+TOTAL                                          274     24     34      1    92%

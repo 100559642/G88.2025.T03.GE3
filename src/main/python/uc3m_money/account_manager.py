@@ -192,12 +192,12 @@ class AccountManager:
         if not match_regex:
             raise AccountManagementException("Error - Invalid deposit amount")
 
-        d_a_f = float(deposit_amount[4:])
-        if d_a_f == 0:
+        deposit_amount_float = float(deposit_amount[4:])
+        if deposit_amount_float == 0:
             raise AccountManagementException("Error - Deposit must be greater than 0")
 
         deposit_obj = AccountDeposit(to_iban=deposit_iban,
-                                     deposit_amount=d_a_f)
+                                     deposit_amount=deposit_amount_float)
 
         try:
             with open(DEPOSITS_STORE_FILE, "r", encoding="utf-8", newline="") as file:

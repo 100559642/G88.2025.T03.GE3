@@ -56,10 +56,10 @@ class AccountManager:
         # Mover los cuatro primeros caracteres al final
 
         # Convertir la cadena en un número entero
-        int_i = int(iban)
+        int_iban = int(iban)
 
         # Calcular el módulo 97
-        mod = int_i % 97
+        mod = int_iban % 97
 
         # Calcular el dígito de control (97 menos el módulo)
         dc = 98 - mod

@@ -211,7 +211,6 @@ class AccountManager:
 
         return deposit_obj.deposit_signature
 
-
     def read_transactions_file(self):
         """loads the content of the transactions file
         and returns a list"""
@@ -242,15 +241,7 @@ class AccountManager:
         last_balance = {"IBAN": iban,
                         "time": datetime.timestamp(datetime.now(timezone.utc)),
                         "BALANCE": balance}
-
-        try:
-            with open(BALANCES_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                balance_list = json.load(file)
-        except FileNotFoundError:
-            balance_list = []
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
-
+        balance_list = self.load_json_store(BALANCES_STORE_FILE)
         balance_list.append(last_balance)
 
         try:

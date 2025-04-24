@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_calculate_balance_tests.TestCalculateBalance-20250424145114" tests="7" file="test_calculate_balance_tests.py" time="0.023" timestamp="2025-04-24T14:51:15" failures="3" errors="2" skipped="0">
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_file_not_json" time="0.001" timestamp="2025-04-24T14:51:15"/>
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_file_wrong_iban_number" time="0.000" timestamp="2025-04-24T14:51:15"/>
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_balance_file_not_json" time="0.011" timestamp="2025-04-24T14:51:15">
+		<failure type="AssertionError" message="True != False : 'NoneType' object is not iterable"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py", line 229, in test_balance_file_not_json
+    self.assertEqual(True,res,msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 837, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 830, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: True != False : 'NoneType' object is not iterable
+]]></failure>
+	</testcase>
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_file_not_found" time="0.002" timestamp="2025-04-24T14:51:15">
+		<failure type="AssertionError" message="True != False : 'NoneType' object is not iterable"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py", line 100, in test_file_not_found
+    self.assertEqual(True,res,msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 837, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 830, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: True != False : 'NoneType' object is not iterable
+]]></failure>
+	</testcase>
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_file_skip_loop" time="0.002" timestamp="2025-04-24T14:51:15">
+		<failure type="AssertionError" message="True != False : 'NoneType' object is not iterable"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py", line 168, in test_file_skip_loop
+    self.assertEqual(True, res, msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 837, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 830, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: True != False : 'NoneType' object is not iterable
+]]></failure>
+	</testcase>
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_calculate_balance_1" time="0.006" timestamp="2025-04-24T14:51:15">
+		<error type="TypeError" message="'NoneType' object is not iterable"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/.venv/lib/python3.9/site-packages/freezegun/api.py", line 885, in wrapper
+    result = func(*args, **kwargs)
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py", line 43, in test_calculate_balance_1
+    res = mngr.calculate_balance(iban="ES3559005439021242088295")
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/main/python/uc3m_money/account_manager.py", line 228, in calculate_balance
+    for transaction in transaction_list:
+TypeError: 'NoneType' object is not iterable
+]]></error>
+	</testcase>
+	<testcase classname="test_calculate_balance_tests.TestCalculateBalance" name="test_file_iban_not_found" time="0.001" timestamp="2025-04-24T14:51:15">
+		<error type="TypeError" message="'NoneType' object is not iterable"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 59, in testPartExecutor
+    yield
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/unittest/python/test_calculate_balance_tests.py", line 188, in test_file_iban_not_found
+    mngr.calculate_balance("ES9420805801101234567891")
+  File "/Users/mimi/PycharmProjects/G88.2025.T03.GE3/src/main/python/uc3m_money/account_manager.py", line 228, in calculate_balance
+    for transaction in transaction_list:
+TypeError: 'NoneType' object is not iterable
+]]></error>
+	</testcase>
+</testsuite>

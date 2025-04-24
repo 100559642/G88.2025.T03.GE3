@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from uc3m_money.data.attr.concept import Concept
 from uc3m_money.data.attr.iban_code import IbanCode
+from uc3m_money.data.attr.transfer_amount import TransferAmount
 from uc3m_money.data.attr.transfer_date import TransferDate
 from uc3m_money.data.attr.transfer_type import TransferType
 
@@ -24,7 +25,7 @@ class TransferRequest:
         self.__transfer_type = TransferType(transfer_type).value
         self.__concept = Concept(transfer_concept).value
         self.__transfer_date = TransferDate(transfer_date).value
-        self.__transfer_amount = transfer_amount
+        self.__transfer_amount = TransferAmount(transfer_amount).value
         justnow = datetime.now(timezone.utc)
         self.__time_stamp = datetime.timestamp(justnow)
 

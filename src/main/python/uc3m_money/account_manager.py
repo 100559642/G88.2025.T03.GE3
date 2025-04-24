@@ -76,8 +76,8 @@ class AccountManager:
         there are other ways to check this"""
         regex_concept = re.compile(r"^(?=^.{10,30}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$")
 
-        res = regex_concept.fullmatch(concept)
-        if not res:
+        confirm_concept_match = regex_concept.fullmatch(concept)
+        if not confirm_concept_match:
             raise AccountManagementException ("Invalid concept format")
 
     def validate_transfer_date(self, t_d):

@@ -141,13 +141,13 @@ class AccountManager:
 
         try:
             with open(TRANSFERS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                t_l = json.load(file)
+                load_transfer = json.load(file)
         except FileNotFoundError:
-            t_l = []
+            load_transfer = []
         except json.JSONDecodeError as ex:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
-        for t_i in t_l:
+        for t_i in load_transfer:
             if (t_i["from_iban"] == my_request.from_iban and
                     t_i["to_iban"] == my_request.to_iban and
                     t_i["transfer_date"] == my_request.transfer_date and
@@ -156,11 +156,11 @@ class AccountManager:
                     t_i["transfer_type"] == my_request.transfer_type):
                 raise AccountManagementException("Duplicated transfer in transfer list")
 
-        t_l.append(my_request.to_json())
+        load_transfer.append(my_request.to_json())
 
         try:
             with open(TRANSFERS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(t_l, file, indent=2)
+                json.dump(load_transfer, file, indent=2)
         except FileNotFoundError as ex:
             raise AccountManagementException("Wrong file  or file path") from ex
         except json.JSONDecodeError as ex:

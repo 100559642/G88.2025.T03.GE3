@@ -238,18 +238,18 @@ class AccountManager:
         iban = self.valivan(iban)
         transaction_list = self.read_transactions_file()
         iban_found = False
-        bal_s = 0
+        balance = 0
         for transaction in transaction_list:
             #print(transaction["IBAN"] + " - " + iban)
             if transaction["IBAN"] == iban:
-                bal_s += float(transaction["amount"])
+                balance += float(transaction["amount"])
                 iban_found = True
         if not iban_found:
             raise AccountManagementException("IBAN not found")
 
         last_balance = {"IBAN": iban,
                         "time": datetime.timestamp(datetime.now(timezone.utc)),
-                        "BALANCE": bal_s}
+                        "BALANCE": balance}
 
         try:
             with open(BALANCES_STORE_FILE, "r", encoding="utf-8", newline="") as file:

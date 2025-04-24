@@ -19,24 +19,6 @@ class AccountManager:
     def __init__(self):
         pass
 
-    def validate_transfer_date(self, transfer_date):
-        """validates the arrival date format  using regex"""
-        regex_date = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        match_regex = regex_date.fullmatch(transfer_date)
-        if not match_regex:
-            raise AccountManagementException("Invalid date format")
-
-        try:
-            my_date = datetime.strptime(transfer_date, "%d/%m/%Y").date()
-        except ValueError as ex:
-            raise AccountManagementException("Invalid date format") from ex
-
-        if my_date < datetime.now(timezone.utc).date():
-            raise AccountManagementException("Transfer date must be today or later.")
-
-        if my_date.year < 2025 or my_date.year > 2050:
-            raise AccountManagementException("Invalid date format")
-        return transfer_date
     #pylint: disable=too-many-arguments
     def transfer_request(self, from_iban: str,
                          to_iban: str,
@@ -50,7 +32,7 @@ class AccountManager:
         #IbanCode(to_iban)
         #self.validate_concept(concept)
         #TransferType.validate(transfer_type)
-        self.validate_transfer_date(date)
+        #self.validate_transfer_date(date)
         self.validate_deposit_amount(amount)
 
         my_request = TransferRequest(from_iban=from_iban,

@@ -112,22 +112,7 @@ class AccountManager:
         self.validate_concept(concept)
         self.validate_transfer_type(transfer_type)
         self.validate_transfer_date(date)
-
-
-
-        try:
-            float_amount  = float(amount)
-        except ValueError as exc:
-            raise AccountManagementException("Invalid transfer amount") from exc
-
-        string_amount = str(float_amount)
-        if '.' in string_amount:
-            decimales = len(string_amount.split('.')[1])
-            if decimales > 2:
-                raise AccountManagementException("Invalid transfer amount")
-
-        if float_amount < 10 or float_amount > 10000:
-            raise AccountManagementException("Invalid transfer amount")
+        self.validate_deposit_amount(amount)
 
         my_request = TransferRequest(from_iban=from_iban,
                                      to_iban=to_iban,
@@ -158,6 +143,19 @@ class AccountManager:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
         return my_request.transfer_code
+
+    def validate_deposit_amount(self, amount):
+        try:
+            float_amount = float(amount)
+        except ValueError as exc:
+            raise AccountManagementException("Invalid transfer amount") from exc
+        string_amount = str(float_amount)
+        if '.' in string_amount:
+            decimales = len(string_amount.split('.')[1])
+            if decimales > 2:
+                raise AccountManagementException("Invalid transfer amount")
+        if float_amount < 10 or float_amount > 10000:
+            raise AccountManagementException("Invalid transfer amount")
 
     def validate_transfer_type(self, transfer_type):
         regex_type = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")

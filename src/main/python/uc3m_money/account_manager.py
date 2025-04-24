@@ -8,6 +8,7 @@ from uc3m_money.account_management_config import (TRANSFERS_STORE_FILE,
                                         TRANSACTIONS_STORE_FILE,
                                         BALANCES_STORE_FILE)
 from uc3m_money.data.attr.iban_code import IbanCode
+from uc3m_money.data.attr.transfer_type import TransferType
 
 from uc3m_money.transfer_request import TransferRequest
 from uc3m_money.account_deposit import AccountDeposit
@@ -55,10 +56,10 @@ class AccountManager:
                          amount: float)->str:
         """first method: receives transfer info and
         stores it into a file"""
-        IbanCode(from_iban)
-        IbanCode(to_iban)
+        #IbanCode(from_iban)
+        #IbanCode(to_iban)
         self.validate_concept(concept)
-        self.validate_transfer_type(transfer_type)
+        #TransferType.validate(transfer_type)
         self.validate_transfer_date(date)
         self.validate_deposit_amount(amount)
 
@@ -104,12 +105,6 @@ class AccountManager:
                 raise AccountManagementException("Invalid transfer amount")
         if float_amount < 10 or float_amount > 10000:
             raise AccountManagementException("Invalid transfer amount")
-
-    def validate_transfer_type(self, transfer_type):
-        regex_type = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")
-        match_regex = regex_type.fullmatch(transfer_type)
-        if not match_regex:
-            raise AccountManagementException("Invalid transfer type")
 
     def load_json_store(self, input_f):
         try:

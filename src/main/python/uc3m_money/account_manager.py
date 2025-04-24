@@ -172,7 +172,7 @@ class AccountManager:
         """manages the deposits received for accounts"""
         try:
             with open(input_file, "r", encoding="utf-8", newline="") as file:
-                i_d = json.load(file)
+                input_deposit = json.load(file)
         except FileNotFoundError as ex:
             raise AccountManagementException("Error: file input not found") from ex
         except json.JSONDecodeError as ex:
@@ -180,8 +180,8 @@ class AccountManager:
 
         # comprobar valores del fichero
         try:
-            deposit_iban = i_d["IBAN"]
-            deposit_amount = i_d["AMOUNT"]
+            deposit_iban = input_deposit["IBAN"]
+            deposit_amount = input_deposit["AMOUNT"]
         except KeyError as e:
             raise AccountManagementException("Error - Invalid Key in JSON") from e
 

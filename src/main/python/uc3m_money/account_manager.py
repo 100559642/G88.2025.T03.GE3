@@ -139,13 +139,7 @@ class AccountManager:
                                      transfer_date=date,
                                      transfer_amount=amount)
 
-        try:
-            with open(TRANSFERS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                load_transfer = json.load(file)
-        except FileNotFoundError:
-            load_transfer = []
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        load_transfer = self.load_json_store()
 
         for existing_transfer in load_transfer:
             if (existing_transfer["from_iban"] == my_request.from_iban and
@@ -167,6 +161,16 @@ class AccountManager:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
         return my_request.transfer_code
+
+    def load_json_store(self):
+        try:
+            with open(TRANSFERS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
+                load_transfer = json.load(file)
+        except FileNotFoundError:
+            load_transfer = []
+        except json.JSONDecodeError as ex:
+            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        return load_transfer
 
     def deposit_into_account(self, input_file:str)->str:
         """manages the deposits received for accounts"""

@@ -80,15 +80,15 @@ class AccountManager:
         if not match_regex:
             raise AccountManagementException ("Invalid concept format")
 
-    def validate_transfer_date(self, t_d):
+    def validate_transfer_date(self, transfer_date):
         """validates the arrival date format  using regex"""
         regex_date = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        match_regex = regex_date.fullmatch(t_d)
+        match_regex = regex_date.fullmatch(transfer_date)
         if not match_regex:
             raise AccountManagementException("Invalid date format")
 
         try:
-            my_date = datetime.strptime(t_d, "%d/%m/%Y").date()
+            my_date = datetime.strptime(transfer_date, "%d/%m/%Y").date()
         except ValueError as ex:
             raise AccountManagementException("Invalid date format") from ex
 
@@ -97,7 +97,7 @@ class AccountManager:
 
         if my_date.year < 2025 or my_date.year > 2050:
             raise AccountManagementException("Invalid date format")
-        return t_d
+        return transfer_date
     #pylint: disable=too-many-arguments
     def transfer_request(self, from_iban: str,
                          to_iban: str,

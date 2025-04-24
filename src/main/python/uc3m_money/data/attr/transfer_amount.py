@@ -3,7 +3,6 @@ from uc3m_money.data.attr.attribute import Attribute
 
 class TransferAmount(Attribute):
     def __init__(self, attr_value):
-        #self._validation_pattern = r""
         self._error_message = "Invalid transfer amount"
         self._attr_value = self._validate(attr_value)
 

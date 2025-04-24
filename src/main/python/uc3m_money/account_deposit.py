@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 import hashlib
 
+from uc3m_money.data.attr.deposit_amount import DepositAmount
 from uc3m_money.data.attr.iban_code import IbanCode
 
 
@@ -14,7 +15,7 @@ class AccountDeposit():
         self.__alg = "SHA-256"
         self.__type = "DEPOSIT"
         self.__to_iban = IbanCode(to_iban).value
-        self.__deposit_amount = deposit_amount
+        self.__deposit_amount = DepositAmount(deposit_amount).value
         justnow = datetime.now(timezone.utc)
         self.__deposit_date = datetime.timestamp(justnow)
 

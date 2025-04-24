@@ -8,7 +8,6 @@ from uc3m_money.account_management_config import (TRANSFERS_STORE_FILE,
                                         TRANSACTIONS_STORE_FILE,
                                         BALANCES_STORE_FILE)
 from uc3m_money.data.attr.iban_code import IbanCode
-from uc3m_money.data.attr.transfer_type import TransferType
 
 from uc3m_money.transfer_request import TransferRequest
 from uc3m_money.account_deposit import AccountDeposit
@@ -28,12 +27,6 @@ class AccountManager:
                          amount: float)->str:
         """first method: receives transfer info and
         stores it into a file"""
-        #IbanCode(from_iban)
-        #IbanCode(to_iban)
-        #self.validate_concept(concept)
-        #TransferType.validate(transfer_type)
-        #self.validate_transfer_date(date)
-        #self.validate_deposit_amount(amount)
 
         my_request = TransferRequest(from_iban=from_iban,
                                      to_iban=to_iban,
@@ -92,19 +85,20 @@ class AccountManager:
         except KeyError as e:
             raise AccountManagementException("Error - Invalid Key in JSON") from e
 
+        #deposit_obj = AccountDeposit(to_iban=deposit_iban, deposit_amount=deposit_amount)
+      #
+        #deposit_iban = IbanCode(deposit_iban).value
+        #regex_amount = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
+        #match_regex = regex_amount.fullmatch(deposit_amount)
+        #if not match_regex:
+            #raise AccountManagementException("Error - Invalid deposit amount")
 
-        deposit_iban = IbanCode(deposit_iban).value
-        regex_amount = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
-        match_regex = regex_amount.fullmatch(deposit_amount)
-        if not match_regex:
-            raise AccountManagementException("Error - Invalid deposit amount")
-
-        deposit_amount_float = float(deposit_amount[4:])
-        if deposit_amount_float == 0:
-            raise AccountManagementException("Error - Deposit must be greater than 0")
-
+        #deposit_amount_float = float(deposit_amount[4:])
+        #if deposit_amount_float == 0:
+            #raise AccountManagementException("Error - Deposit must be greater than 0")
+#
         deposit_obj = AccountDeposit(to_iban=deposit_iban,
-                                     deposit_amount=deposit_amount_float)
+                                     deposit_amount=deposit_amount)
         deposit_lists = self.load_json_store(DEPOSITS_STORE_FILE)
 
         deposit_lists.append(deposit_obj.to_json())

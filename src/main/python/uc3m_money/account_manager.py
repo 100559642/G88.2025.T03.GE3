@@ -59,10 +59,10 @@ class AccountManager:
         int_iban = int(iban)
 
         # Calcular el módulo 97
-        mod = int_iban % 97
+        iban_mod = int_iban % 97
 
         # Calcular el dígito de control (97 menos el módulo)
-        dc = 98 - mod
+        dc = 98 - iban_mod
 
         if int(original_code) != dc:
             #print(dc)

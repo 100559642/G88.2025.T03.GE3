@@ -236,10 +236,10 @@ class AccountManager:
     def calculate_balance(self, iban:str)->bool:
         """calculate the balance for a given iban"""
         iban = self.valivan(iban)
-        t_l = self.read_transactions_file()
+        transaction_list = self.read_transactions_file()
         iban_found = False
         bal_s = 0
-        for transaction in t_l:
+        for transaction in transaction_list:
             #print(transaction["IBAN"] + " - " + iban)
             if transaction["IBAN"] == iban:
                 bal_s += float(transaction["amount"])

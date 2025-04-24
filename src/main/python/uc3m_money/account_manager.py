@@ -110,10 +110,7 @@ class AccountManager:
         self.valivan(from_iban)
         self.valivan(to_iban)
         self.validate_concept(concept)
-        regex_type = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")
-        match_regex = regex_type.fullmatch(transfer_type)
-        if not match_regex:
-            raise AccountManagementException("Invalid transfer type")
+        self.validate_transfer_type(transfer_type)
         self.validate_transfer_date(date)
 
 
@@ -161,6 +158,12 @@ class AccountManager:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
         return my_request.transfer_code
+
+    def validate_transfer_type(self, transfer_type):
+        regex_type = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")
+        match_regex = regex_type.fullmatch(transfer_type)
+        if not match_regex:
+            raise AccountManagementException("Invalid transfer type")
 
     def load_json_store(self):
         try:

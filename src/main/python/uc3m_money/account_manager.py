@@ -82,8 +82,8 @@ class AccountManager:
 
     def validate_transfer_date(self, t_d):
         """validates the arrival date format  using regex"""
-        mr = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        res = mr.fullmatch(t_d)
+        regex_date = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
+        res = regex_date.fullmatch(t_d)
         if not res:
             raise AccountManagementException("Invalid date format")
 

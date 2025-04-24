@@ -147,13 +147,13 @@ class AccountManager:
         except json.JSONDecodeError as ex:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
-        for t_i in load_transfer:
-            if (t_i["from_iban"] == my_request.from_iban and
-                    t_i["to_iban"] == my_request.to_iban and
-                    t_i["transfer_date"] == my_request.transfer_date and
-                    t_i["transfer_amount"] == my_request.transfer_amount and
-                    t_i["transfer_concept"] == my_request.transfer_concept and
-                    t_i["transfer_type"] == my_request.transfer_type):
+        for existing_transfer in load_transfer:
+            if (existing_transfer["from_iban"] == my_request.from_iban and
+                    existing_transfer["to_iban"] == my_request.to_iban and
+                    existing_transfer["transfer_date"] == my_request.transfer_date and
+                    existing_transfer["transfer_amount"] == my_request.transfer_amount and
+                    existing_transfer["transfer_concept"] == my_request.transfer_concept and
+                    existing_transfer["transfer_type"] == my_request.transfer_type):
                 raise AccountManagementException("Duplicated transfer in transfer list")
 
         load_transfer.append(my_request.to_json())

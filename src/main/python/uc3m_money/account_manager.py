@@ -29,8 +29,8 @@ class AccountManager:
         str: El dígito de control calculado.
         """
         regex_ib = re.compile(r"^ES[0-9]{22}")
-        res = regex_ib.fullmatch(iban_code)
-        if not res:
+        match_regex = regex_ib.fullmatch(iban_code)
+        if not match_regex:
             raise AccountManagementException("Invalid IBAN format")
         iban = iban_code
         original_code = iban[2:4]

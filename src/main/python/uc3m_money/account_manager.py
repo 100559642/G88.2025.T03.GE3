@@ -121,7 +121,7 @@ class AccountManager:
                                      transfer_date=date,
                                      transfer_amount=amount)
 
-        load_transfer = self.load_json_store()
+        load_transfer = self.load_json_store(TRANSFERS_STORE_FILE)
 
         for existing_transfer in load_transfer:
             if (existing_transfer["from_iban"] == my_request.from_iban and
@@ -163,9 +163,9 @@ class AccountManager:
         if not match_regex:
             raise AccountManagementException("Invalid transfer type")
 
-    def load_json_store(self):
+    def load_json_store(self, input_f):
         try:
-            with open(TRANSFERS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
+            with open(input_f, "r", encoding="utf-8", newline="") as file:
                 load_transfer = json.load(file)
         except FileNotFoundError:
             load_transfer = []
@@ -175,13 +175,7 @@ class AccountManager:
 
     def deposit_into_account(self, input_file:str)->str:
         """manages the deposits received for accounts"""
-        try:
-            with open(input_file, "r", encoding="utf-8", newline="") as file:
-                input_deposit = json.load(file)
-        except FileNotFoundError as ex:
-            raise AccountManagementException("Error: file input not found") from ex
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        input_deposit = self.load_json_store(input_file)
 
         # comprobar valores del fichero
         try:

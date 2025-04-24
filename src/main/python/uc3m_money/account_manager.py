@@ -201,17 +201,17 @@ class AccountManager:
 
         try:
             with open(DEPOSITS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                d_l = json.load(file)
+                deposit_lists = json.load(file)
         except FileNotFoundError as ex:
-            d_l = []
+            deposit_lists = []
         except json.JSONDecodeError as ex:
             raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
-        d_l.append(deposit_obj.to_json())
+        deposit_lists.append(deposit_obj.to_json())
 
         try:
             with open(DEPOSITS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(d_l, file, indent=2)
+                json.dump(deposit_lists, file, indent=2)
         except FileNotFoundError as ex:
             raise AccountManagementException("Wrong file  or file path") from ex
         except json.JSONDecodeError as ex:

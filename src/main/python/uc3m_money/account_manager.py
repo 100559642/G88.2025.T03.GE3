@@ -188,8 +188,8 @@ class AccountManager:
 
         deposit_iban = self.valivan(deposit_iban)
         regex_amount = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
-        res = regex_amount.fullmatch(deposit_amount)
-        if not res:
+        match_regex = regex_amount.fullmatch(deposit_amount)
+        if not match_regex:
             raise AccountManagementException("Error - Invalid deposit amount")
 
         d_a_f = float(deposit_amount[4:])

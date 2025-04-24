@@ -111,8 +111,8 @@ class AccountManager:
         self.valivan(to_iban)
         self.validate_concept(concept)
         regex_type = re.compile(r"(ORDINARY|INMEDIATE|URGENT)")
-        res = regex_type.fullmatch(transfer_type)
-        if not res:
+        match_regex = regex_type.fullmatch(transfer_type)
+        if not match_regex:
             raise AccountManagementException("Invalid transfer type")
         self.validate_transfer_date(date)
 

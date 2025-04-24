@@ -123,9 +123,9 @@ class AccountManager:
         except ValueError as exc:
             raise AccountManagementException("Invalid transfer amount") from exc
 
-        n_str = str(float_amount)
-        if '.' in n_str:
-            decimales = len(n_str.split('.')[1])
+        string_amount = str(float_amount)
+        if '.' in string_amount:
+            decimales = len(string_amount.split('.')[1])
             if decimales > 2:
                 raise AccountManagementException("Invalid transfer amount")
 

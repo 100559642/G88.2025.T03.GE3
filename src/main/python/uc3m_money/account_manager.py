@@ -119,17 +119,17 @@ class AccountManager:
 
 
         try:
-            f_amount  = float(amount)
+            float_amount  = float(amount)
         except ValueError as exc:
             raise AccountManagementException("Invalid transfer amount") from exc
 
-        n_str = str(f_amount)
+        n_str = str(float_amount)
         if '.' in n_str:
             decimales = len(n_str.split('.')[1])
             if decimales > 2:
                 raise AccountManagementException("Invalid transfer amount")
 
-        if f_amount < 10 or f_amount > 10000:
+        if float_amount < 10 or float_amount > 10000:
             raise AccountManagementException("Invalid transfer amount")
 
         my_request = TransferRequest(from_iban=from_iban,

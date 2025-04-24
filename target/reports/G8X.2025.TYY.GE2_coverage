@@ -5,7 +5,11 @@ uc3m_money/__init__.py                           5      0      0      0   100%
 uc3m_money/account_deposit.py                   35      6      0      0    83%
 uc3m_money/account_management_config.py          7      0      0      0   100%
 uc3m_money/account_management_exception.py      10      1      0      0    90%
-uc3m_money/account_manager.py                  152     10     34      1    94%
-uc3m_money/transfer_request.py                  59      7      0      0    88%
+uc3m_money/account_manager.py                  138     11     30      1    93%
+uc3m_money/data/__init__.py                      0      0      0      0   100%
+uc3m_money/data/attr/__init__.py                 0      0      0      0   100%
+uc3m_money/data/attr/attribute.py               19      4      2      0    81%
+uc3m_money/data/attr/iban_code.py               24      0      2      0   100%
+uc3m_money/transfer_request.py                  60      7      0      0    88%
 ------------------------------------------------------------------------------
-TOTAL                                          268     24     34      1    92%
+TOTAL                                          298     29     34      1    91%

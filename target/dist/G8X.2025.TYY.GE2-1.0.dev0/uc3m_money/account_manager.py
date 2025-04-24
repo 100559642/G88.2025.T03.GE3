@@ -7,6 +7,7 @@ from uc3m_money.account_management_config import (TRANSFERS_STORE_FILE,
                                         DEPOSITS_STORE_FILE,
                                         TRANSACTIONS_STORE_FILE,
                                         BALANCES_STORE_FILE)
+from uc3m_money.data.attr.iban_code import IbanCode
 
 from uc3m_money.transfer_request import TransferRequest
 from uc3m_money.account_deposit import AccountDeposit
@@ -16,59 +17,6 @@ class AccountManager:
     """Class for providing the methods for managing the orders"""
     def __init__(self):
         pass
-
-    @staticmethod
-    def valivan(iban_code: str):
-        """
-    Calcula el dígito de control de un IBAN español.
-
-    Args:
-        iban_code (str): El IBAN sin los dos últimos dígitos (dígito de control).
-
-    Returns:
-        str: El dígito de control calculado.
-        """
-        regex_ib = re.compile(r"^ES[0-9]{22}")
-        regex_matches = regex_ib.fullmatch(iban_code)
-        if not regex_matches:
-            raise AccountManagementException("Invalid IBAN format")
-        iban = iban_code
-        original_code = iban[2:4]
-        #replacing the control
-        iban = iban[:2] + "00" + iban[4:]
-        iban = iban[4:] + iban[:4]
-
-
-        # Convertir el IBAN en una cadena numérica, reemplazando letras por números
-        iban = (iban.replace('A', '10').replace('B', '11').
-                replace('C', '12').replace('D', '13').replace('E', '14').
-                replace('F', '15'))
-        iban = (iban.replace('G', '16').replace('H', '17').
-                replace('I', '18').replace('J', '19').replace('K', '20').
-                replace('L', '21'))
-        iban = (iban.replace('M', '22').replace('N', '23').
-                replace('O', '24').replace('P', '25').replace('Q', '26').
-                replace('R', '27'))
-        iban = (iban.replace('S', '28').replace('T', '29').replace('U', '30').
-                replace('V', '31').replace('W', '32').replace('X', '33'))
-        iban = iban.replace('Y', '34').replace('Z', '35')
-
-        # Mover los cuatro primeros caracteres al final
-
-        # Convertir la cadena en un número entero
-        int_iban = int(iban)
-
-        # Calcular el módulo 97
-        iban_mod = int_iban % 97
-
-        # Calcular el dígito de control (97 menos el módulo)
-        control_digit = 98 - iban_mod
-
-        if int(original_code) != control_digit:
-            #print(control_digit)
-            raise AccountManagementException("Invalid IBAN control digit")
-
-        return iban_code
 
     def validate_concept(self, concept: str):
         """regular expression for checking the minimum and maximum length as well as
@@ -107,8 +55,8 @@ class AccountManager:
                          amount: float)->str:
         """first method: receives transfer info and
         stores it into a file"""
-        self.valivan(from_iban)
-        self.valivan(to_iban)
+        IbanCode(from_iban)
+        IbanCode(to_iban)
         self.validate_concept(concept)
         self.validate_transfer_type(transfer_type)
         self.validate_transfer_date(date)
@@ -175,7 +123,13 @@ class AccountManager:
 
     def deposit_into_account(self, input_file:str)->str:
         """manages the deposits received for accounts"""
-        input_deposit = self.load_json_store(input_file)
+        try:
+            with open(input_file, "r", encoding="utf-8", newline="") as file:
+                input_deposit = json.load(file)
+        except FileNotFoundError as ex:
+            raise AccountManagementException("Error: file input not found") from ex
+        except json.JSONDecodeError as ex:
+            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
         # comprobar valores del fichero
         try:
@@ -185,7 +139,7 @@ class AccountManager:
             raise AccountManagementException("Error - Invalid Key in JSON") from e
 
 
-        deposit_iban = self.valivan(deposit_iban)
+        deposit_iban = IbanCode(deposit_iban).value
         regex_amount = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
         match_regex = regex_amount.fullmatch(deposit_amount)
         if not match_regex:
@@ -226,7 +180,7 @@ class AccountManager:
 
     def calculate_balance(self, iban:str)->bool:
         """calculate the balance for a given iban"""
-        iban = self.valivan(iban)
+        iban = IbanCode(iban).value
         transaction_list = self.read_transactions_file()
         iban_found = False
         balance = 0
@@ -242,8 +196,6 @@ class AccountManager:
                         "time": datetime.timestamp(datetime.now(timezone.utc)),
                         "BALANCE": balance}
         balance_list = self.load_json_store(BALANCES_STORE_FILE)
-
-
         balance_list.append(last_balance)
 
         try:

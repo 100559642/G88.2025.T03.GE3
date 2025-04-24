@@ -74,9 +74,9 @@ class AccountManager:
         """regular expression for checking the minimum and maximum length as well as
         the allowed characters and spaces restrictions
         there are other ways to check this"""
-        myregex = re.compile(r"^(?=^.{10,30}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$")
+        regex_concept = re.compile(r"^(?=^.{10,30}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$")
 
-        res = myregex.fullmatch(concept)
+        res = regex_concept.fullmatch(concept)
         if not res:
             raise AccountManagementException ("Invalid concept format")
 

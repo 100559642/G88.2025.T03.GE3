@@ -19,16 +19,6 @@ class AccountManager:
     def __init__(self):
         pass
 
-    def validate_concept(self, concept: str):
-        """regular expression for checking the minimum and maximum length as well as
-        the allowed characters and spaces restrictions
-        there are other ways to check this"""
-        regex_concept = re.compile(r"^(?=^.{10,30}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$")
-
-        match_regex = regex_concept.fullmatch(concept)
-        if not match_regex:
-            raise AccountManagementException ("Invalid concept format")
-
     def validate_transfer_date(self, transfer_date):
         """validates the arrival date format  using regex"""
         regex_date = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
@@ -58,7 +48,7 @@ class AccountManager:
         stores it into a file"""
         #IbanCode(from_iban)
         #IbanCode(to_iban)
-        self.validate_concept(concept)
+        #self.validate_concept(concept)
         #TransferType.validate(transfer_type)
         self.validate_transfer_date(date)
         self.validate_deposit_amount(amount)

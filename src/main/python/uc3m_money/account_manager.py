@@ -8,6 +8,7 @@ from uc3m_money.account_management_config import (TRANSFERS_STORE_FILE,
                                         TRANSACTIONS_STORE_FILE,
                                         BALANCES_STORE_FILE)
 from uc3m_money.data.attr.iban_code import IbanCode
+from uc3m_money.iban_balance import IbanBalance
 
 from uc3m_money.transfer_request import TransferRequest
 from uc3m_money.account_deposit import AccountDeposit
@@ -85,18 +86,6 @@ class AccountManager:
         except KeyError as e:
             raise AccountManagementException("Error - Invalid Key in JSON") from e
 
-        #deposit_obj = AccountDeposit(to_iban=deposit_iban, deposit_amount=deposit_amount)
-      #
-        #deposit_iban = IbanCode(deposit_iban).value
-        #regex_amount = re.compile(r"^EUR [0-9]{4}\.[0-9]{2}")
-        #match_regex = regex_amount.fullmatch(deposit_amount)
-        #if not match_regex:
-            #raise AccountManagementException("Error - Invalid deposit amount")
-
-        #deposit_amount_float = float(deposit_amount[4:])
-        #if deposit_amount_float == 0:
-            #raise AccountManagementException("Error - Deposit must be greater than 0")
-#
         deposit_obj = AccountDeposit(to_iban=deposit_iban,
                                      deposit_amount=deposit_amount)
         deposit_lists = self.load_json_store(DEPOSITS_STORE_FILE)
@@ -129,20 +118,8 @@ class AccountManager:
     def calculate_balance(self, iban:str)->bool:
         """calculate the balance for a given iban"""
         iban = IbanCode(iban).value
-        transaction_list = self.read_transactions_file()
-        iban_found = False
-        balance = 0
-        for transaction in transaction_list:
-            #print(transaction["IBAN"] + " - " + iban)
-            if transaction["IBAN"] == iban:
-                balance += float(transaction["amount"])
-                iban_found = True
-        if not iban_found:
-            raise AccountManagementException("IBAN not found")
-
-        last_balance = {"IBAN": iban,
-                        "time": datetime.timestamp(datetime.now(timezone.utc)),
-                        "BALANCE": balance}
+        iban_balance = IbanBalance(iban)
+        last_balance = iban_balance.to_json()
         balance_list = self.load_json_store(BALANCES_STORE_FILE)
         balance_list.append(last_balance)
 

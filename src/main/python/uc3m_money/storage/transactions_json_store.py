@@ -2,7 +2,7 @@ from uc3m_money import AccountManagementException
 from uc3m_money.account_management_config import TRANSACTIONS_STORE_FILE
 from uc3m_money.storage.json_store import JsonStore
 
-class TransferJsonStore(JsonStore):
+class TransactionsJsonStore(JsonStore):
     """class for handling Transfer Json"""
     _file_label = TRANSACTIONS_STORE_FILE
     def __init__(self):

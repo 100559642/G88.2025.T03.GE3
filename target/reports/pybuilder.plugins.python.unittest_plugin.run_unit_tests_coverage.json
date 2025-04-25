@@ -206,32 +206,34 @@
         9,
         11,
         12,
+        13,
         14,
-        17,
-        18,
+        16,
         19,
         20,
         21,
         22,
         23,
         24,
+        25,
         26,
-        31,
-        32,
+        28,
         33,
         34,
+        35,
         36,
-        37,
         38,
         39,
         40,
         41,
+        42,
         43,
-        45
+        45,
+        47
       ],
       "lines_not_covered": [],
       "module": "uc3m_money.iban_balance",
-      "sum_lines": 30,
+      "sum_lines": 32,
       "sum_lines_not_covered": 0
     },
     {
@@ -587,5 +589,5 @@
   ],
   "overall_branch_coverage": 96.15384615384616,
   "overall_branch_partial_coverage": 96.15384615384616,
-  "overall_coverage": 89.14956011730206
+  "overall_coverage": 89.21282798833819
 }

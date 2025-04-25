@@ -9,7 +9,9 @@ from uc3m_money.data.attr.iban_code import IbanCode
 class IbanBalance:
     """Class to manage IBAN balances"""
     def __init__(self, iban: str):
-        self.iban = IbanCode(iban).value
+        self._iban = IbanCode(iban).value
+        self._last_balance_time = datetime.timestamp(datetime.now(timezone.utc))
+        self._balance = self.calculate_balance()
 
     def read_transactions_file(self):
         """loads the content of the transactions file
@@ -33,7 +35,7 @@ class IbanBalance:
         balance = 0
         for transaction in transaction_list:
             # print(transaction["IBAN"] + " - " + iban)
-            if transaction["IBAN"] == self.iban:
+            if transaction["IBAN"] == self._iban:
                 balance += float(transaction["amount"])
                 iban_found = True
         if not iban_found:
@@ -43,7 +45,7 @@ class IbanBalance:
     def to_json(self):
         """Returns the balance data in a JSON-compatible format."""
         return {
-            "IBAN": self.iban,
-            "time": datetime.timestamp(datetime.now(timezone.utc)),
-            "BALANCE": self.calculate_balance()  # Get the calculated balance for the IBAN
+            "IBAN": self._iban,
+            "time": self._last_balance_time,
+            "BALANCE": self._balance  # Get the calculated balance for the IBAN
         }

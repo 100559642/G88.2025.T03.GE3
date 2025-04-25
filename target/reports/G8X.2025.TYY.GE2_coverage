@@ -5,7 +5,7 @@ uc3m_money/__init__.py                           5      0      0      0   100%
 uc3m_money/account_deposit.py                   37      6      0      0    84%
 uc3m_money/account_management_config.py          7      0      0      0   100%
 uc3m_money/account_management_exception.py      10      1      0      0    90%
-uc3m_money/account_manager.py                   81     19      4      0    78%
+uc3m_money/account_manager.py                   66     11      0      0    83%
 uc3m_money/data/__init__.py                      0      0      0      0   100%
 uc3m_money/data/attr/__init__.py                 0      0      0      0   100%
 uc3m_money/data/attr/attribute.py               19      4      2      0    81%
@@ -16,6 +16,10 @@ uc3m_money/data/attr/transfer_amount.py         19      0      6      1    96%
 uc3m_money/data/attr/transfer_date.py           19      0      4      0   100%
 uc3m_money/data/attr/transfer_type.py            7      0      0      0   100%
 uc3m_money/iban_balance.py                      32      0      6      0   100%
-uc3m_money/transfer_request.py                  64      7      0      0    89%
+uc3m_money/storage/__init__.py                   0      0      0      0   100%
+uc3m_money/storage/deposits_json_store.py        5      0      0      0   100%
+uc3m_money/storage/json_store.py                25      4      0      0    84%
+uc3m_money/storage/transfer_json_store.py       10      0      4      0   100%
+uc3m_money/transfer_request.py                  64     13      0      0    80%
 ------------------------------------------------------------------------------
-TOTAL                                          343     37     26      1    90%
+TOTAL                                          368     39     26      1    90%

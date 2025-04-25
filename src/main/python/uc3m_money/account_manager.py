@@ -1,16 +1,14 @@
 """Account manager module """
-import re
 import json
-from datetime import datetime, timezone
 from uc3m_money.account_management_exception import AccountManagementException
-from uc3m_money.account_management_config import (TRANSFERS_STORE_FILE,
-                                        DEPOSITS_STORE_FILE,
-                                        TRANSACTIONS_STORE_FILE,
+from uc3m_money.account_management_config import (TRANSACTIONS_STORE_FILE,
                                         BALANCES_STORE_FILE)
 from uc3m_money.data.attr.iban_code import IbanCode
 from uc3m_money.iban_balance import IbanBalance
 from uc3m_money.storage.transfer_json_store import TransferJsonStore
 from uc3m_money.storage.deposits_json_store import DepositsJsonStore
+from uc3m_money.storage.balances_json_store import BalancesJsonStore
+
 
 from uc3m_money.transfer_request import TransferRequest
 from uc3m_money.account_deposit import AccountDeposit
@@ -94,12 +92,8 @@ class AccountManager:
         iban = IbanCode(iban).value
         iban_balance = IbanBalance(iban)
         last_balance = iban_balance.to_json()
-        balance_list = self.load_json_store(BALANCES_STORE_FILE)
-        balance_list.append(last_balance)
-
-        try:
-            with open(BALANCES_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(balance_list, file, indent=2)
-        except FileNotFoundError as ex:
-            raise AccountManagementException("Wrong file  or file path") from ex
+        #balance_list = self.load_json_store(BALANCES_STORE_FILE)
+        balances_storage = BalancesJsonStore()
+        balances_storage.adding_item(iban_balance)
+        #balance_list.append(last_balance)
         return True

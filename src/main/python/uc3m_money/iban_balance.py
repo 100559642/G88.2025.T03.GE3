@@ -4,6 +4,7 @@ from uc3m_money.account_management_exception import AccountManagementException
 from datetime import datetime, timezone
 
 from uc3m_money.data.attr.iban_code import IbanCode
+from uc3m_money.storage.transactions_json_store import TransactionsJsonStore
 
 
 class IbanBalance:
@@ -30,10 +31,10 @@ class IbanBalance:
                 Calculates the balance for the provided IBAN by loading transactions
                 or existing balance from the file.
                 """
-        transaction_list = self.read_transactions_file()
+        transactions = self.read_transactions_file()
         iban_found = False
         balance = 0
-        for transaction in transaction_list:
+        for transaction in transactions:
             # print(transaction["IBAN"] + " - " + iban)
             if transaction["IBAN"] == self._iban:
                 balance += float(transaction["amount"])

@@ -1,7 +1,9 @@
 """Contains the class OrderShipping"""
+import json
 from datetime import datetime, timezone
 import hashlib
 
+from uc3m_money.account_management_exception import AccountManagementException
 from uc3m_money.data.attr.deposit_amount import DepositAmount
 from uc3m_money.data.attr.iban_code import IbanCode
 
@@ -64,3 +66,20 @@ class AccountDeposit():
     def deposit_signature( self ):
         """Returns the sha256 signature of the date"""
         return hashlib.sha256(self.__signature_string().encode()).hexdigest()
+
+    @classmethod
+    def load_deposit_from_file(cls, input_file):
+        try:
+            with open(input_file, "r", encoding="utf-8", newline="") as file:
+                input_deposit = json.load(file)
+        except FileNotFoundError as ex:
+            raise AccountManagementException("Error: file input not found") from ex
+        except json.JSONDecodeError as ex:
+            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        # comprobar valores del fichero
+        try:
+            deposit_iban = input_deposit["IBAN"]
+            deposit_amount = input_deposit["AMOUNT"]
+        except KeyError as e:
+            raise AccountManagementException("Error - Invalid Key in JSON") from e
+        return cls(deposit_iban, deposit_amount)

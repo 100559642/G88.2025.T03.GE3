@@ -40,38 +40,13 @@ class AccountManager:
 
         return my_request.transfer_code
 
-    def load_json_store(self, input_f):
-        try:
-            with open(input_f, "r", encoding="utf-8", newline="") as file:
-                load_transfer = json.load(file)
-        except FileNotFoundError:
-            load_transfer = []
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
-        return load_transfer
 
     def deposit_into_account(self, input_file:str)->str:
         """manages the deposits received for accounts"""
-        try:
-            with open(input_file, "r", encoding="utf-8", newline="") as file:
-                input_deposit = json.load(file)
-        except FileNotFoundError as ex:
-            raise AccountManagementException("Error: file input not found") from ex
-        except json.JSONDecodeError as ex:
-            raise AccountManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        deposit_obj = AccountDeposit.load_deposit_from_file(input_file)
 
-        # comprobar valores del fichero
-        try:
-            deposit_iban = input_deposit["IBAN"]
-            deposit_amount = input_deposit["AMOUNT"]
-        except KeyError as e:
-            raise AccountManagementException("Error - Invalid Key in JSON") from e
-
-        deposit_obj = AccountDeposit(to_iban=deposit_iban,
-                                     deposit_amount=deposit_amount)
-
-        deposits_json_store = DepositsJsonStore()
-        deposits_json_store.adding_item(deposit_obj)
+        deposits_storage = DepositsJsonStore()
+        deposits_storage.adding_item(deposit_obj)
         return deposit_obj.deposit_signature
 
     def read_transactions_file(self):
@@ -91,9 +66,6 @@ class AccountManager:
         """calculate the balance for a given iban"""
         iban = IbanCode(iban).value
         iban_balance = IbanBalance(iban)
-        last_balance = iban_balance.to_json()
-        #balance_list = self.load_json_store(BALANCES_STORE_FILE)
         balances_storage = BalancesJsonStore()
         balances_storage.adding_item(iban_balance)
-        #balance_list.append(last_balance)
         return True

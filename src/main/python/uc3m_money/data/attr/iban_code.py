@@ -1,8 +1,27 @@
+"""
+Module for validating Spanish IBAN codes.
+
+Provides the IbanCode class to check IBAN format and validate the control digits
+according to the Spanish banking standard.
+"""
 from uc3m_money.data.attr.attribute import Attribute
 from uc3m_money.account_management_exception import AccountManagementException
 
 class IbanCode(Attribute):
+    """
+      IbanCode class for validating Spanish IBAN (International Bank Account Number) codes.
+
+      Inherits from Attribute and ensures that:
+      - The IBAN starts with 'ES' followed by 22 digits.
+      - The control digits are correctly calculated and verified.
+
+      Attributes:
+          _validation_pattern (str): Regular expression to match the basic IBAN structure.
+          _error_message (str): Error message shown if validation fails.
+          _attr_value (str): The validated IBAN string.
+      """
     def __init__(self, attr_value):
+        super().__init__()
         self._validation_pattern = r"^ES[0-9]{22}"
         self._error_message = "Invalid IBAN format"
         self._attr_value = self._validate(attr_value)

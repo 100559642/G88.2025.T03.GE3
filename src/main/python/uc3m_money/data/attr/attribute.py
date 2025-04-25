@@ -1,3 +1,10 @@
+"""
+Module for defining a generic attribute with validation.
+
+Provides the Attribute class, which validates input values
+against a regular expression and raises exceptions on invalid input.
+"""
+
 import re
 from uc3m_money.account_management_exception import AccountManagementException
 class Attribute():
@@ -21,4 +28,3 @@ class Attribute():
     @value.setter
     def value(self, attr_value):
         self._attr_value = self._validate(attr_value)
-

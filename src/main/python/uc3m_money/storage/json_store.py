@@ -1,10 +1,26 @@
+"""
+Module for generic JSON-based storage operations.
+
+Defines the JsonStore class, which handles loading, saving, adding,
+and retrieving data stored in JSON files with error handling for
+file access and format issues.
+"""
 import json
 
 from uc3m_money.account_management_exception import AccountManagementException
 
 
 class JsonStore():
-    """json store class"""
+    """
+    JsonStore class for managing generic JSON file storage.
+
+    Provides methods to load existing data from a file, save data to a file,
+    add new items, and retrieve the stored list.
+
+    Attributes:
+        _data_list (list): Internal list of stored items.
+        _file_label (str): File path for the JSON store.
+    """
     _data_list = []
     _file_label = ""
     def __init__(self):
@@ -32,4 +48,10 @@ class JsonStore():
         self.save_list_to_file()
 
     def get_data_list(self):
+        """
+           Retrieve the current list of stored items.
+
+           Returns:
+               list: The list of items loaded from the JSON file.
+        """
         return self._data_list

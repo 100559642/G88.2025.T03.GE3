@@ -69,6 +69,7 @@ class AccountDeposit():
 
     @classmethod
     def load_deposit_from_file(cls, input_file):
+        """loading deposit from file"""
         try:
             with open(input_file, "r", encoding="utf-8", newline="") as file:
                 input_deposit = json.load(file)
